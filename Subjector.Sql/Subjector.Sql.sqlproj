@@ -66,6 +66,8 @@
     <Build Include="dbo\Subject.sql" />
     <Build Include="dbo\SubjectActivity.sql" />
     <Build Include="dbo\Result.sql" />
+    <Build Include="dbo\Session.sql" />
+    <Build Include="dbo\Cert.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Subjector.Sql.refactorlog" />
