@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[User]
+(
+	[Id] INT NOT NULL IDENTITY (1,1) PRIMARY KEY, 
+    [Email] NVARCHAR(100) NOT NULL, 
+    [Password] NVARCHAR(MAX) NOT NULL, 
+    [FirstName] NVARCHAR(250) NOT NULL, 
+    [LastName] NVARCHAR(250) NOT NULL, 
+    [DateCreated] DATETIME NOT NULL DEFAULT GETDATE(), 
+    [Role] INT NOT NULL, 
+    [RefCode] NVARCHAR(50) NULL, 
+    [Archived] BIT NOT NULL DEFAULT 0
+)
