@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Subjector.Entities;
 
 namespace Subjector.API
 {
@@ -24,6 +26,9 @@ namespace Subjector.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connection = @"Server=.\OBSIDIAN;Database=Subjector;Trusted_Connection=True;";
+            services.AddDbContext<SubjectorContext>(options => options.UseSqlServer(connection));
+
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
