@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Subjector.Entities
+namespace Subjector.Data.Entities
 {
     public partial class ActivityType
     {

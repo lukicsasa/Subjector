@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Subjector.Entities
+namespace Subjector.Data.Entities
 {
     public partial class Session
     {

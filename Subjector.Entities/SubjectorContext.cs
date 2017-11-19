@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Subjector.Entities
+namespace Subjector.Data.Entities
 {
     public partial class SubjectorContext : DbContext
     {
@@ -13,6 +12,11 @@ namespace Subjector.Entities
         public virtual DbSet<Subject> Subject { get; set; }
         public virtual DbSet<SubjectActivity> SubjectActivity { get; set; }
         public virtual DbSet<User> User { get; set; }
+
+        public SubjectorContext() 
+        {
+            
+        }
 
         public SubjectorContext(DbContextOptions<SubjectorContext> options)
             : base(options)

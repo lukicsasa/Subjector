@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Subjector.Entities\Subjector.Entities.csproj" />
+    <ProjectReference Include="..\Subjector.Entities\Subjector.Data.Entities.csproj" />
   </ItemGroup>
 
 </Project>

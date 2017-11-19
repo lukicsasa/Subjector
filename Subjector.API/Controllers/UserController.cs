@@ -6,5 +6,6 @@ namespace Subjector.API.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
+
     }
 }
