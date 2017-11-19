@@ -12,12 +12,17 @@ namespace Subjector.Data
     {
         #region Fields
 
+        private const string Connection = @"Server=.\OBSIDIAN;Database=Subjector;Trusted_Connection=True;";
+
         /// <summary>
         /// Data context
         /// </summary>
         private DbContext context;
 
         private UserRepository _userRepository;
+
+        private DbContextOptions<SubjectorContext> _options;
+
 
         #endregion Fields
 
@@ -30,7 +35,21 @@ namespace Subjector.Data
         {
             get
             {
-                return context ?? (context = new SubjectorContext());
+                return context ?? (context = new SubjectorContext(Options));
+            }
+        }
+
+        public DbContextOptions<SubjectorContext> Options
+        {
+            get
+            {
+                if (_options == null)
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<SubjectorContext>();
+                    optionsBuilder.UseSqlServer(Connection);
+                    _options = optionsBuilder.Options;
+                }
+                return _options;
             }
         }
 

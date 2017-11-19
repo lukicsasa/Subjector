@@ -13,11 +13,6 @@ namespace Subjector.Data.Entities
         public virtual DbSet<SubjectActivity> SubjectActivity { get; set; }
         public virtual DbSet<User> User { get; set; }
 
-        public SubjectorContext() 
-        {
-            
-        }
-
         public SubjectorContext(DbContextOptions<SubjectorContext> options)
             : base(options)
         { }

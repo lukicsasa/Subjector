@@ -26,8 +26,8 @@ namespace Subjector.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = @"Server=.\OBSIDIAN;Database=Subjector;Trusted_Connection=True;";
-            services.AddDbContext<SubjectorContext>(options => options.UseSqlServer(connection));
+            //var connection = @"Server=.\OBSIDIAN;Database=Subjector;Trusted_Connection=True;";
+            //services.AddDbContext<SubjectorContext>(options => options.UseSqlServer(connection));
 
             services.Configure<MvcOptions>(options =>
             {
@@ -47,7 +47,10 @@ namespace Subjector.API
                 .AddRedirectToHttps(301, 5001);
 
             app.UseRewriter(options);
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapWebApiRoute("DefaultApi", "api/{controller}/{action}/{id?}");
+            });
         }
     }
 }

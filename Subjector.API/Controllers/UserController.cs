@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Subjector.Data;
+using Subjector.Data.Entities;
 
 namespace Subjector.API.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/user")]
     public class UserController : Controller
     {
-
+        [HttpGet]
+        public string Index()
+        {
+            return "Running...";
+        }
     }
 }
