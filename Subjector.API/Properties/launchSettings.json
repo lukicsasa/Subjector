@@ -18,7 +18,6 @@
     },
     "Subjector.API": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/user/index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -8,4 +8,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Subjector.Common\Subjector.Common.csproj" />
+    <ProjectReference Include="..\Subjector.Data\Subjector.Data.csproj" />
+    <ProjectReference Include="..\Subjector.Entities\Subjector.Data.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

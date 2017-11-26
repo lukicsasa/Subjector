@@ -22,12 +22,6 @@ namespace Subjector.Data
             return _context.Set<T>();
         }
 
-        public virtual async Task<ICollection<T>> GetAllAsyn()
-        {
-
-            return await _context.Set<T>().ToListAsync();
-        }
-
         public virtual T Get(int id)
         {
             return _context.Set<T>().Find(id);
@@ -67,11 +61,6 @@ namespace Subjector.Data
         public ICollection<T> FindAll(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().Where(match).ToList();
-        }
-
-        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
-        {
-            return await _context.Set<T>().Where(match).ToListAsync();
         }
 
         public virtual void Delete(T entity)
@@ -137,11 +126,6 @@ namespace Subjector.Data
         {
             IQueryable<T> query = _context.Set<T>().Where(predicate);
             return query;
-        }
-
-        public virtual async Task<ICollection<T>> FindByAsyn(Expression<Func<T, bool>> predicate)
-        {
-            return await _context.Set<T>().Where(predicate).ToListAsync();
         }
 
         public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)

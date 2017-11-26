@@ -189,7 +189,7 @@ namespace Subjector.Data.Entities
                     .IsRequired()
                     .HasMaxLength(250);
 
-                entity.Property(e => e.Password).IsRequired();
+                entity.Property(e => e.Password);
 
                 entity.Property(e => e.RefCode).HasMaxLength(50);
             });

@@ -8,10 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
-using Subjector.Data.Entities;
+using Newtonsoft.Json.Serialization;
+using Subjector.API.Middleware;
 
 namespace Subjector.API
 {
@@ -26,14 +24,14 @@ namespace Subjector.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //var connection = @"Server=.\OBSIDIAN;Database=Subjector;Trusted_Connection=True;";
-            //services.AddDbContext<SubjectorContext>(options => options.UseSqlServer(connection));
-
+            services.AddCors();
             services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
             });
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options => options.SerializerSettings.ContractResolver =
+                    new CamelCasePropertyNamesContractResolver());
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -43,10 +41,17 @@ namespace Subjector.API
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials());
+
             var options = new RewriteOptions()
                 .AddRedirectToHttps(301, 5001);
 
             app.UseRewriter(options);
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc(routes =>
             {
                 routes.MapWebApiRoute("DefaultApi", "api/{controller}/{action}/{id?}");
