@@ -56,13 +56,7 @@ namespace Subjector.Data
         #region Repository
 
 
-        public UserRepository UserRepository
-        {
-            get
-            {
-                return _userRepository ?? (_userRepository = new UserRepository(DataContext));
-            }
-        }
+        public UserRepository UserRepository => _userRepository ?? (_userRepository = new UserRepository(DataContext));
 
         #endregion Repository
 

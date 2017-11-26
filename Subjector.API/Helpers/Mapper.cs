@@ -33,7 +33,8 @@ namespace Subjector.API.Helpers
                 Email = user.Email,
                 DateCreated = user.DateCreated,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                RefCode = user.RefCode
             };
             return userModel;
         }

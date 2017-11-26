@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Subjector.API.Helpers;
 using Subjector.API.Models;
@@ -27,6 +29,28 @@ namespace Subjector.API.Controllers
             User user = UserManager.Register(userModel);
             UserModel model = Mapper.Map(user);
             return model;
+        }
+
+        [TokenAuthorize]
+        [HttpGet]
+        public List<UserModel> GetUsersRequests(int role)
+        {
+            var users = UserManager.GetUsersRequests(role);
+            return users.Select(Mapper.Map).ToList();
+        }
+
+        [TokenAuthorize]
+        [HttpPost]
+        public void AcceptRequest(int userId)
+        {
+            UserManager.AcceptRequest(userId);
+        }
+
+        [TokenAuthorize]
+        [HttpPost]
+        public void DeleteRequest(int userId)
+        {
+            UserManager.DeleteRequest(userId);
         }
     }
 }

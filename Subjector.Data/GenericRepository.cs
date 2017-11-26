@@ -22,6 +22,11 @@ namespace Subjector.Data
             return _context.Set<T>();
         }
 
+        public bool Any(Expression<Func<T, bool>> match)
+        {
+            return _context.Set<T>().Any(match);
+        }
+
         public virtual T Get(int id)
         {
             return _context.Set<T>().Find(id);
