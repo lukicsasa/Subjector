@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Subjector.API.Controllers;
 using Subjector.API.Models;
+using Subjector.Common;
 using Subjector.Common.Exceptions;
 
 namespace Subjector.API.Helpers
@@ -52,7 +53,7 @@ namespace Subjector.API.Helpers
                 }
 
                 // Validate roles
-                if (Roles != null && !Roles.Split(',').ToList().Intersect(user.Roles).Any())
+                if (user.RoleStr != Role.Admin.ToString() && Roles != null && !Roles.Split(',').ToList().Contains(user.RoleStr))
                 {
                     throw new AuthenticationException("You do not have permission to access this resource!");
                 }

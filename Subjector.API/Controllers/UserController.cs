@@ -17,7 +17,7 @@ namespace Subjector.API.Controllers
         [HttpPost]
         public object Login([FromBody]LoginModel model)
         {
-            User user = UserManager.Login(model.Email, model.Password);
+            User user = UserManager.Login(model.Email, model.Password, model.Role);
             var userModel = Mapper.Map(user);
             return new { User = userModel, Token = SecurityHelper.CreateLoginToken(user) };
         }
@@ -31,7 +31,7 @@ namespace Subjector.API.Controllers
             return model;
         }
 
-        [TokenAuthorize]
+        [TokenAuthorize(Roles = "Professor")]
         [HttpGet]
         public List<UserModel> GetUsersRequests(int role)
         {
@@ -39,18 +39,25 @@ namespace Subjector.API.Controllers
             return users.Select(Mapper.Map).ToList();
         }
 
-        [TokenAuthorize]
+        [TokenAuthorize(Roles = "Professor")]
         [HttpPost]
         public void AcceptRequest(int userId)
         {
             UserManager.AcceptRequest(userId);
         }
 
-        [TokenAuthorize]
+        [TokenAuthorize(Roles = "Professor")]
         [HttpPost]
         public void DeleteRequest(int userId)
         {
             UserManager.DeleteRequest(userId);
+        }
+
+        [TokenAuthorize(Roles = "Professor")]
+        [HttpPost]
+        public void AddProfessor([FromBody]UserModel user)
+        {
+            UserManager.AddProfessor(user);
         }
     }
 }

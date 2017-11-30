@@ -8,19 +8,25 @@ using JWT.Serializers;
 using Remotion.Linq.Clauses;
 using StackExchange.Redis;
 using Subjector.API.Models;
+using Subjector.Common;
 using Subjector.Data.Entities;
 
 namespace Subjector.API.Helpers
 {
     public static class SecurityHelper
     {
-        public const string SecretKey =
+        private const string SecretKey =
                 "f2HDuRfAb7zN75E9BmtvR5MmdjVgV79ddaxTJEdwpNHfEVHq5uDk3CASmrrxqQE6KVCXgRZhD3CRPd2QFwuB5xUdHGgRZEmr6SN8YMX2hEYytXyuLd6dEPb7dPFTm8vHdBLQSkB5YzLEACPDzT6QVE8HrDHQ9FQbhQpkuC2TUk3wjfffdK8WDEDQzKSXjyLX4r66zgptavd29AeU4KFsZmuFvbYxPq4yEcCXmUhPVmKD9BeHv2vNQ9Gb73AXKeW4";
 
         public static string CreateLoginToken(User user)
         {
-            UserJwtModel userModel = Mapper.AutoMap<User, UserJwtModel>(user);
-            userModel.ExpirationDate = DateTime.UtcNow.AddDays(1);
+            UserJwtModel userModel = new UserJwtModel
+            {
+                Email = user.Email,
+                Id = user.Id,
+                Role = user.Role,
+                ExpirationDate = DateTime.UtcNow.AddDays(1),
+            };
 
             IJsonSerializer serializer = new JsonNetSerializer();
             IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();

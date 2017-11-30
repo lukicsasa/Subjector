@@ -10,6 +10,7 @@ namespace Subjector.API.Models
         public int Id { get; set; }
         public string Email { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public List<string> Roles { get; set; } = new List<string>();
+        public int Role { get; set; }
+        public string RoleStr => ((Common.Role) Role).ToString();
     }
 }

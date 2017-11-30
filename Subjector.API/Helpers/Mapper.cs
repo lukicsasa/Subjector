@@ -34,7 +34,8 @@ namespace Subjector.API.Helpers
                 DateCreated = user.DateCreated,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                RefCode = user.RefCode
+                RefCode = user.RefCode,
+                Role = user.Role
             };
             return userModel;
         }
