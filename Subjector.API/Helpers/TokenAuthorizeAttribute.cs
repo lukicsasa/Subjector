@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using JWT;
 using JWT.Serializers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Subjector.API.Controllers;
 using Subjector.API.Models;
 using Subjector.Common;
 using Subjector.Common.Exceptions;
+using Subjector.Data;
 
 namespace Subjector.API.Helpers
 {
@@ -56,6 +58,11 @@ namespace Subjector.API.Helpers
                 if (user.RoleStr != Role.Admin.ToString() && Roles != null && !Roles.Split(',').ToList().Contains(user.RoleStr))
                 {
                     throw new AuthenticationException("You do not have permission to access this resource!");
+                }
+
+                if (user.Role == (int) Role.Professor)
+                {
+                    SecurityHelper.ValidateCertificate(actionContext.HttpContext, user);
                 }
 
                 // Add current user to base controller

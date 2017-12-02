@@ -25,7 +25,7 @@ namespace Subjector.Core
                 if (user.Role == (int)Role.PendingStudent) throw new ValidationException("You are not approved yet!");
                 if (!PasswordHelper.ValidatePassword(password, user.Password))
                     throw new ValidationException("Wrong email or password!");
-                if (role != user.Role) throw new ValidationException($"You can't login as {(Role)role}!");
+                if (role != user.Role && user.Role != (int)Role.Admin) throw new ValidationException($"You can't login as {(Role)role}!");
                 return user;
             }
         }
@@ -149,6 +149,14 @@ namespace Subjector.Core
                 var pass = PasswordHelper.RandomPasswordGenerator(8);
                 newUser.Password = PasswordHelper.CreateHash(pass);
 
+                var cert = CertHelper.GenerateCertificate();
+
+                newUser.Cert.Add(new Cert
+                {
+                    Active = true,
+                    CertNumber = cert.SerialNumber
+                });
+
                 uow.UserRepository.Add(newUser);
                 uow.Save();
 
@@ -163,6 +171,7 @@ namespace Subjector.Core
 
                     MailMessage mailMessage = new MailMessage { From = new MailAddress("lukic.sasa11@gmail.com", "Subjector Customer Support") };
                     mailMessage.To.Add(user.Email);
+                    mailMessage.Attachments.Add(new Attachment(cert.Path));
                     mailMessage.Body = $"Hello {user.FirstName} {user.LastName}, \n \n You have been added into Subjector project. \n You will need to install certificate we've sent you as attachment. \n \n Here is your password: {pass} \n \n We would advice you to change password when you log in.";
                     mailMessage.Subject = "Subjector invitation";
                     Task.Run(() => client.Send(mailMessage));
@@ -172,6 +181,22 @@ namespace Subjector.Core
                     throw new ValidationException(e.Message);
                 }
             }
+        }
+
+        public void ChangePassword(int currentUserId, string currentPassword, string newPassword)
+        {
+            using (var uow = new UnitOfWork())
+            {
+                var user = uow.UserRepository.Get(currentUserId);
+                ValidationHelper.ValidateNotNull(user);
+
+                if(!PasswordHelper.ValidatePassword(currentPassword, user.Password)) 
+                    throw new ValidationException("Incorrect current password!");
+
+                user.Password = PasswordHelper.CreateHash(newPassword);
+                uow.Save();
+            }
+
         }
     }
 }

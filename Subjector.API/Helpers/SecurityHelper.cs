@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 using JWT;
 using JWT.Algorithms;
 using JWT.Serializers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Remotion.Linq.Clauses;
 using StackExchange.Redis;
 using Subjector.API.Models;
 using Subjector.Common;
+using Subjector.Common.Exceptions;
+using Subjector.Data;
 using Subjector.Data.Entities;
 
 namespace Subjector.API.Helpers
@@ -43,6 +47,29 @@ namespace Subjector.API.Helpers
             IBase64UrlEncoder urlEncoder = new JwtBase64UrlEncoder();
             IJwtDecoder decoder = new JwtDecoder(serializer, validator, urlEncoder);
             return decoder.DecodeToObject<T>(value);
+        }
+
+        public static void ValidateCertificate(HttpContext httpContext, UserJwtModel currentUser)
+        {
+            var cert = httpContext.Connection.ClientCertificate;
+            if (cert == null)
+                throw new ValidationException("Certificate not provided!");
+
+            var certNumber = cert.SerialNumber;
+
+            if (cert.Archived)
+                throw new ValidationException("Certificate has been disabled, please contact support!");
+            if (!cert.Verify())
+                throw new ValidationException("Invalid certificate, please contact support!");
+
+            using (var uow = new UnitOfWork())
+            {
+                var user = uow.UserRepository.Get(currentUser.Id);
+                if (user.Cert.All(a => a.CertNumber != certNumber))
+                {
+                    throw new ValidationException("Invalid certificate, please contact support!");
+                }
+            }
         }
     }
 }
